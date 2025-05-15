@@ -12,7 +12,7 @@ struct TimerView: View {
     @State private var timeRemaining = 25 * 60
     @State private var isRunning = false
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
+    
     var body: some View {
         VStack(spacing: 40) {
             Text(formatTime(timeRemaining))
@@ -22,7 +22,7 @@ struct TimerView: View {
                         timeRemaining -= 1
                     }
                 }
-
+            
             Button(action: { isRunning.toggle() }) {
                 Text(isRunning ? "Pause" : "Start")
                     .font(.title2)
@@ -35,7 +35,7 @@ struct TimerView: View {
         .padding()
         .background(Color(.systemTeal).opacity(0.1))
     }
-
+    
     func formatTime(_ seconds: Int) -> String {
         let mins = seconds / 60
         let secs = seconds % 60
