@@ -11,7 +11,7 @@ import SwiftUI
 struct Focus_BubbleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TimerView()
         }
     }
 }
