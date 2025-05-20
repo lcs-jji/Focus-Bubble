@@ -36,8 +36,14 @@ struct TimerView: View {
                     .cornerRadius(20)
             }
         }
+        .frame(width: 270,height: 270)
         .padding()
-        .background(Color(.systemTeal).opacity(0.1))
+        .background(Color(.white).opacity(0.25))
+        .clipShape(Circle())
+        .overlay(
+            Circle().stroke(Color.gray, lineWidth: 10)
+                )
+        
     }
     
     func formatTime(_ seconds: Int) -> String {

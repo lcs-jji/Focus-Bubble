@@ -14,10 +14,16 @@ struct LandingView: View {
     var body: some View {
         
         NavigationStack {
-            VStack {
-                TimerView()
+            ZStack {
+                LinearGradient(colors: [
+                    Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+                
+                VStack {
+                    TimerView()
+                }
+                .navigationTitle("Focus Bubble")
             }
-            .navigationTitle("Focus Bubble")
         }
     }
 }
