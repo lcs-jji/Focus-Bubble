@@ -9,18 +9,22 @@ import SwiftUI
 import AVFoundation
 
 struct TimerView: View {
-    @State private var timeRemaining = 25 * 60
-    @State private var isRunning = false
+    
+    @State var timeRemaining = 25 * 60
+    @State var isRunning = false
+    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
+        
         VStack(spacing: 40) {
+            
             Text(formatTime(timeRemaining))
                 .font(.system(size: 60, weight: .bold))
                 .onReceive(timer) { _ in
                     if isRunning && timeRemaining > 0 {
                         timeRemaining -= 1
-                    }
+                    }//ChatGPT
                 }
             
             Button(action: { isRunning.toggle() }) {
@@ -39,7 +43,7 @@ struct TimerView: View {
     func formatTime(_ seconds: Int) -> String {
         let mins = seconds / 60
         let secs = seconds % 60
-        return String(format: "%02d:%02d", mins, secs)
+        return String(format: "%02d:%02d", mins, secs)//ChatGPT
     }
 }
 
