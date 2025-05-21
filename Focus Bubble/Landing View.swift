@@ -9,24 +9,18 @@ import SwiftUI
 
 struct LandingView: View {
     
-    
-    
     var body: some View {
-        
-        NavigationStack {
-            ZStack {
-                LinearGradient(colors: [
-                    Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea()
-                
-                VStack {
-                    TimerView()
+        TabView {
+            TimerView()
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
                 }
-                .navigationTitle("Focus Bubble")
-            }
+                .tag(1)
         }
     }
 }
+
 
 #Preview {
     LandingView()

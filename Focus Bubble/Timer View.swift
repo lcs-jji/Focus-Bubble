@@ -16,43 +16,51 @@ struct TimerView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
+        NavigationStack {
         
-        VStack(spacing: 40) {
-            
-            Text(formatTime(timeRemaining))
-                .font(.system(size: 60, weight: .bold))
-                .onReceive(timer) { _ in
-                    if isRunning && timeRemaining > 0 {
-                        timeRemaining -= 1
-                    }//ChatGPT
+            ZStack {
+                
+                LinearGradient(colors: [
+                    Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+                
+                VStack(spacing: 40) {
+                    
+                    Text(formatTime(timeRemaining))
+                        .font(.system(size: 60, weight: .bold))
+                        .onReceive(timer) { _ in
+                            if isRunning && timeRemaining > 0 {
+                                timeRemaining -= 1
+                            }//ChatGPT
+                        }
+                    
+                    Button(action: { isRunning.toggle() }) {
+                        Text(isRunning ? "Pause" : "Start")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                    }
                 }
-            
-            Button(action: { isRunning.toggle() }) {
-                Text(isRunning ? "Pause" : "Start")
-                    .font(.title2)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-            }
-        }
-        .frame(width: 270,height: 270)
-        .padding()
-        .background(Color(.white).opacity(0.25))
-        .clipShape(Circle())
-        .overlay(
-            Circle().stroke(Color.gray, lineWidth: 10)
+                .frame(width: 270,height: 270)
+                .padding()
+                .background(Color(.white).opacity(0.25))
+                .clipShape(Circle())
+                .overlay(
+                    Circle().stroke(Color.gray, lineWidth: 10)
                 )
-        
-    }
-    
-    func formatTime(_ seconds: Int) -> String {
-        let mins = seconds / 60
-        let secs = seconds % 60
-        return String(format: "%02d:%02d", mins, secs)//ChatGPT
+            }
+            .navigationTitle("Focus Bubble")
+        }
     }
 }
 
+func formatTime(_ seconds: Int) -> String {
+    let mins = seconds / 60
+    let secs = seconds % 60
+    return String(format: "%02d:%02d", mins, secs)//ChatGPT
+}
 #Preview {
     TimerView()
 }
