@@ -12,17 +12,26 @@ struct TimerView: View {
     
     @State var timeRemaining = 25 * 60
     @State var isRunning = false
+    @State var currentPhase = 1
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     
     var body: some View {
         NavigationStack {
         
             ZStack {
                 
-                LinearGradient(colors: [
-                    Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+                Group {
+                    if currentPhase == 1 {
+                        LinearGradient(colors: [
+                            Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea()
+                    } else if currentPhase == 2 {
+                        LinearGradient(colors: [
+                            Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea()
+                    }
                 
                 VStack(spacing: 40) {
                     
@@ -34,7 +43,9 @@ struct TimerView: View {
                             }//ChatGPT
                         }
                     
-                    Button(action: { isRunning.toggle() }) {
+                    Button(action: {
+                        isRunning.toggle() })
+                    {
                         Text(isRunning ? "Pause" : "Start")
                             .font(.title2)
                             .padding()
@@ -61,6 +72,8 @@ func formatTime(_ seconds: Int) -> String {
     let secs = seconds % 60
     return String(format: "%02d:%02d", mins, secs)//ChatGPT
 }
+
+
 #Preview {
     TimerView()
 }

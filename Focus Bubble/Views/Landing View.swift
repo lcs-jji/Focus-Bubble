@@ -11,12 +11,21 @@ struct LandingView: View {
     
     var body: some View {
         TabView {
+            
             TimerView()
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
                 .tag(1)
+            
+            SoundSettingView()
+                .tabItem {
+                    Image(systemName: "speaker.wave.3.fill")
+                    Text("Sound")
+                }
+                .tag(2)
+            
         }
     }
 }
