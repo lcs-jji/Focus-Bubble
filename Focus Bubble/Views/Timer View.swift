@@ -25,39 +25,49 @@ struct TimerView: View {
                 Group {
                     if currentPhase == 1 {
                         LinearGradient(colors: [
-                            Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            Color("LightBlue"), Color("PaleBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
                         .ignoresSafeArea()
                     } else if currentPhase == 2 {
                         LinearGradient(colors: [
-                            Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            Color("Grey"), Color("Brown"), Color("PaleBlue"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
                         .ignoresSafeArea()
                     } else {
                         LinearGradient(colors: [
-                            Color("LightBlue"), Color("LightBlue"), Color("Brown"), Color("Pink")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            Color("LightBlue"), Color("Pink"), Color("Brown"), Color("PaleBlue")], startPoint: .topLeading, endPoint: .bottomTrailing)
                         .ignoresSafeArea()
                     }
                 }
                 
-                VStack(spacing: 55) {
+                VStack {
                     
-                    Text(formatTime(timeRemaining))
-                        .font(.system(size: 60, weight: .bold))
-                        .onReceive(timer) { _ in
-                            if isRunning && timeRemaining > 0 {
-                                timeRemaining -= 1
-                            }//ChatGPT
+                    VStack(spacing: 40) {
+                        
+                        Text(formatTime(timeRemaining))
+                            .font(.system(size: 60, weight: .bold))
+                            .onReceive(timer) { _ in
+                                if isRunning && timeRemaining > 0 {
+                                    timeRemaining -= 1
+                                }//ChatGPT
+                            }
+                        
+                        Button(action: {
+                            isRunning.toggle() })
+                        {
+                            Text(isRunning ? "Pause" : "Start")
+                                .font(.title2)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(20)
                         }
-                    
-                    Button(action: {
-                        isRunning.toggle() })
-                    {
-                        Text(isRunning ? "Pause" : "Start")
-                            .font(.title2)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(20)
                     }
+                    .frame(width: 270,height: 270)
+                    .padding()
+                    .background(Color(.white).opacity(0.4))
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle().stroke(Color.gray, lineWidth: 10)
+                    )
                     
                     Picker("Timer Type", selection: $currentPhase.animation()) {
                         Text("Focus").tag(1)
@@ -66,9 +76,6 @@ struct TimerView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                .frame(width: 270,height: 270)
-                .padding()
-                .background(Color(.white).opacity(0.4))
             }
             .navigationTitle("Focus Bubble")
         }
