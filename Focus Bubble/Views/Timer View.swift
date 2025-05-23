@@ -10,16 +10,20 @@ import AVFoundation
 
 struct TimerView: View {
     
-    @State var timeRemaining = 25 * 60
-    @State var isRunning = false
+    let focusTimerAmount = 10
+    let shortBreakTimerAmount = 5 * 60
+    let longBreakTimerAmount = 15 * 60
+    @State var timer: Timer?
+    @State var timeRemaining = 10
+    @State var isRunning: Bool = false
     @State var currentPhase = 1
+    @State var cycleCount = 0
+    @State var changeComplete = false
     
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
     
     var body: some View {
         NavigationStack {
-        
+            
             ZStack {
                 
                 Group {
@@ -44,21 +48,27 @@ struct TimerView: View {
                         
                         Text(formatTime(timeRemaining))
                             .font(.system(size: 60, weight: .bold))
-                            .onReceive(timer) { _ in
-                                if isRunning && timeRemaining > 0 {
-                                    timeRemaining -= 1
-                                }//ChatGPT
-                            }
                         
-                        Button(action: {
-                            isRunning.toggle() })
-                        {
-                            Text(isRunning ? "Pause" : "Start")
-                                .font(.title2)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(20)
+                        HStack {
+                            
+                            Button("Start") {
+                                isRunning.toggle()
+                                startTimer()
+                            }
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            
+                            Button("Stop") {
+                                stopTimer()
+                            }
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
                         }
                     }
                     .frame(width: 270,height: 270)
@@ -75,10 +85,52 @@ struct TimerView: View {
                         Text("Long Break").tag(3)
                     }
                     .pickerStyle(.segmented)
+                    .padding(30)
+                    
+                    Text("Rounds have you done with Focus Bubble: \(cycleCount)")
+                        .font(.title2)
+                        .padding()
                 }
             }
             .navigationTitle("Focus Bubble")
         }
+    }
+    
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true)
+        { _ in
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            } else {
+                switchPhase()
+                stopTimer()
+            }
+        }
+    }
+    
+    func stopTimer() {
+        isRunning = false
+        timer?.invalidate()
+    }
+    
+    func switchPhase() {
+        if currentPhase == 1 {
+            cycleCount += 1
+            if cycleCount % 2 == 0{
+                currentPhase = 3
+                timeRemaining = longBreakTimerAmount
+                startTimer()
+            } else {
+                currentPhase = 2
+                timeRemaining = shortBreakTimerAmount
+                startTimer()
+            }
+        } else {
+            currentPhase = 1
+            timeRemaining = focusTimerAmount
+            startTimer()
+        }
+        isRunning = false
     }
 }
 
